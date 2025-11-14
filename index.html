@@ -1,0 +1,720 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AnkitCodeNet - Learn. Create. Grow.</title>
+    <meta name="description" content="AnkitCodeNet offers professional website design, web development courses, video editing courses, and client project services. Learn, create, and grow with us." />
+    <meta name="keywords" content="AnkitCodeNet, Web Design, Web Development, Video Editing, Online Courses, Offline Classes, Tutorials, Client Projects, HTML, CSS, JavaScript, Python" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Simple scrollbar styling for a more modern look */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1f2937; /* bg-gray-800 */
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #4b5563; /* bg-gray-600 */
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #6b7280; /* bg-gray-500 */
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.0/client",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-900 text-gray-100">
+    <div id="root"></div>
+    <script type="module">
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { HashRouter, Routes, Route, useLocation, NavLink, Link } from 'react-router-dom';
+
+const { useState, useEffect } = React;
+
+// --- From constants.ts ---
+const courses = [
+  {
+    title: "Web Design Mastery",
+    description: "From fundamentals to advanced techniques, learn to design beautiful, responsive, and user-friendly websites.",
+    features: ["UI/UX Principles", "Figma & Adobe XD", "Responsive Design", "Color Theory", "Typography"],
+    duration: "8 Weeks",
+    highlights: ["Portfolio Projects", "Live Q&A Sessions", "Certificate of Completion"]
+  },
+  {
+    title: "Full-Stack Web Development",
+    description: "Become a complete web developer. Master both front-end and back-end technologies to build powerful web applications.",
+    features: ["HTML, CSS, JavaScript", "React & Node.js", "Databases (SQL/NoSQL)", "API Development", "Deployment"],
+    duration: "16 Weeks",
+    highlights: ["Real-world Projects", "Code Reviews", "Career Guidance", "Certificate of Completion"]
+  },
+  {
+    title: "Video Editing Pro",
+    description: "Learn the art of storytelling through video. Master editing software and techniques for professional results.",
+    features: ["Adobe Premiere Pro", "After Effects Basics", "Storytelling & Pacing", "Color Correction & Grading", "Sound Design"],
+    duration: "6 Weeks",
+    highlights: ["Hands-on Exercises", "Project-based Learning", "Industry Best Practices", "Certificate of Completion"]
+  }
+];
+
+const services = [
+    {
+        title: "Custom Website Development",
+        description: "We build fast, scalable, and secure websites tailored to your business needs, from simple landing pages to complex e-commerce platforms.",
+        imageUrl: "https://picsum.photos/seed/serv1/600/400"
+    },
+    {
+        title: "Modern Website Designing",
+        description: "Our designs are not just beautiful, they are intuitive and user-centric, ensuring the best possible experience for your audience.",
+        imageUrl: "https://picsum.photos/seed/serv2/600/400"
+    },
+    {
+        title: "Professional Video Editing",
+        description: "From corporate videos to social media content, we provide high-quality video editing services that captivate and engage your viewers.",
+        imageUrl: "https://picsum.photos/seed/serv3/600/400"
+    },
+    {
+        title: "E-Commerce Solutions",
+        description: "Launch your online store with our robust e-commerce solutions, complete with secure payments and inventory management.",
+        imageUrl: "https://picsum.photos/seed/serv4/600/400"
+    }
+];
+
+const skills = ["HTML5", "CSS3", "JavaScript (ES6+)", "TypeScript", "React", "Node.js", "Express", "Python", "Flask", "SQL", "MongoDB", "Figma", "Adobe Premiere Pro", "Adobe After Effects"];
+
+const testimonials = [
+  {
+    quote: "The web development course was fantastic! The curriculum is well-structured and Ankit is a brilliant instructor. I landed a new job thanks to the skills I gained.",
+    name: "Priya Sharma",
+    title: "Web Developer"
+  },
+  {
+    quote: "AnkitCodeNet designed our company website, and the result was beyond our expectations. Professional, responsive, and visually stunning. Highly recommended!",
+    name: "Rohan Verma",
+    title: "CEO, Tech Solutions"
+  },
+  {
+    quote: "I took the video editing course as a complete beginner. The step-by-step tutorials were easy to follow, and I'm now confident in creating my own content.",
+    name: "Aisha Khan",
+    title: "Content Creator"
+  }
+];
+
+const faqs = [
+  {
+    question: "Are the classes online, offline, or both?",
+    answer: "We offer both online and offline classes to cater to different learning preferences. Our online classes are live and interactive, while our offline classes provide a hands-on classroom experience."
+  },
+  {
+    question: "Will I get a certificate after completing a course?",
+    answer: "Yes, upon successful completion of any of our courses, you will receive a certificate from AnkitCodeNet to showcase your new skills."
+  },
+  {
+    question: "Do you provide study materials?",
+    answer: "Absolutely. All our courses come with comprehensive study materials, including lecture notes, code samples, project files, and access to our online resource library."
+  },
+  {
+    question: "What kind of support can I expect during the course?",
+    answer: "You'll have access to dedicated Q&A sessions, a community forum to interact with fellow students and instructors, and personalized feedback on your projects to ensure you're on the right track."
+  }
+];
+
+// --- From components/Icons.tsx ---
+const CheckCircleIcon = ({ className }) => (
+    React.createElement('svg', { className: `w-6 h-6 flex-shrink-0 ${className}`, fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" },
+        React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "2", d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" })
+    )
+);
+
+const ChevronDownIcon = ({ className }) => (
+    React.createElement('svg', { className: `w-6 h-6 ${className}`, fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" },
+        React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "2", d: "M19 9l-7 7-7-7" })
+    )
+);
+
+const QuoteIcon = () => (
+    React.createElement('svg', { className: "w-10 h-10 text-cyan-500", fill: "currentColor", viewBox: "0 0 32 32", "aria-hidden": "true" },
+        React.createElement('path', { d: "M9.333 22.583h4.584L16.5 15.5H9.333v7.083zm11.334 0h4.583L27.833 15.5h-7.166v7.083z" })
+    )
+);
+
+const StarIcon = () => (
+    React.createElement('svg', { className: "w-5 h-5 text-yellow-400", fill: "currentColor", viewBox: "0 0 20 20" },
+        React.createElement('path', { d: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" })
+    )
+);
+
+// --- From components/Header.tsx ---
+const NavLinks = ({ onClick }) => (
+  React.createElement(React.Fragment, null,
+    React.createElement(NavLink, { to: "/", className: ({ isActive }) => `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${isActive ? 'bg-cyan-500 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`, onClick: onClick }, "Home"),
+    React.createElement(NavLink, { to: "/courses", className: ({ isActive }) => `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${isActive ? 'bg-cyan-500 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`, onClick: onClick }, "Courses"),
+    React.createElement(NavLink, { to: "/about", className: ({ isActive }) => `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${isActive ? 'bg-cyan-500 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`, onClick: onClick }, "About"),
+    React.createElement(NavLink, { to: "/services", className: ({ isActive }) => `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${isActive ? 'bg-cyan-500 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`, onClick: onClick }, "Services"),
+    React.createElement(NavLink, { to: "/contact", className: ({ isActive }) => `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${isActive ? 'bg-cyan-500 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`, onClick: onClick }, "Contact")
+  )
+);
+
+const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    React.createElement('header', { className: "fixed top-0 left-0 right-0 z-50 bg-gray-800/80 backdrop-blur-sm shadow-lg" },
+      React.createElement('nav', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+        React.createElement('div', { className: "flex items-center justify-between h-16" },
+          React.createElement('div', { className: "flex items-center" },
+            React.createElement(Link, { to: "/", className: "text-2xl font-bold text-white" },
+              "Ankit", React.createElement('span', { className: "text-cyan-400" }, "CodeNet")
+            )
+          ),
+          React.createElement('div', { className: "hidden md:block" },
+            React.createElement('div', { className: "ml-10 flex items-baseline space-x-4" },
+              React.createElement(NavLinks, null)
+            )
+          ),
+          React.createElement('div', { className: "-mr-2 flex md:hidden" },
+            React.createElement('button', {
+              onClick: () => setIsOpen(!isOpen),
+              type: "button",
+              className: "bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white",
+              "aria-controls": "mobile-menu",
+              "aria-expanded": "false"
+            },
+              React.createElement('span', { className: "sr-only" }, "Open main menu"),
+              !isOpen ? (
+                React.createElement('svg', { className: "block h-6 w-6", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", "aria-hidden": "true" },
+                  React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "2", d: "M4 6h16M4 12h16M4 18h16" })
+                )
+              ) : (
+                React.createElement('svg', { className: "block h-6 w-6", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", "aria-hidden": "true" },
+                  React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "2", d: "M6 18L18 6M6 6l12 12" })
+                )
+              )
+            )
+          )
+        )
+      ),
+      isOpen && (
+        React.createElement('div', { className: "md:hidden", id: "mobile-menu" },
+          React.createElement('div', { className: "px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col" },
+             React.createElement(NavLinks, { onClick: () => setIsOpen(false) })
+          )
+        )
+      )
+    )
+  );
+};
+
+
+// --- From components/Footer.tsx ---
+const TwitterIcon = () => (
+    React.createElement('svg', { className: "w-6 h-6", fill: "currentColor", viewBox: "0 0 24 24", "aria-hidden": "true" },
+        React.createElement('path', { d: "M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" })
+    )
+);
+
+const LinkedInIcon = () => (
+    React.createElement('svg', { className: "w-6 h-6", fill: "currentColor", viewBox: "0 0 24 24", "aria-hidden": "true" },
+        React.createElement('path', { fillRule: "evenodd", d: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z", clipRule: "evenodd" })
+    )
+);
+
+const GithubIcon = () => (
+    React.createElement('svg', { className: "w-6 h-6", fill: "currentColor", viewBox: "0 0 24 24", "aria-hidden": "true" },
+        React.createElement('path', { fillRule: "evenodd", d: "M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.82c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z", clipRule: "evenodd" })
+    )
+);
+
+const Footer = () => {
+    return (
+        React.createElement('footer', { className: "bg-gray-800 border-t border-gray-700" },
+            React.createElement('div', { className: "max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8" },
+                React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-4 gap-8" },
+                    React.createElement('div', { className: "space-y-4" },
+                        React.createElement('h3', { className: "text-2xl font-bold text-white" }, "Ankit", React.createElement('span', { className: "text-cyan-400" }, "CodeNet")),
+                        React.createElement('p', { className: "text-gray-400 text-sm" }, "Learn. Create. Grow."),
+                        React.createElement('div', { className: "flex space-x-4" },
+                           React.createElement('a', { href: "#", className: "text-gray-400 hover:text-cyan-400 transition-colors duration-300" }, React.createElement(TwitterIcon, null)),
+                           React.createElement('a', { href: "#", className: "text-gray-400 hover:text-cyan-400 transition-colors duration-300" }, React.createElement(LinkedInIcon, null)),
+                           React.createElement('a', { href: "#", className: "text-gray-400 hover:text-cyan-400 transition-colors duration-300" }, React.createElement(GithubIcon, null))
+                        )
+                    ),
+                    React.createElement('div', null,
+                        React.createElement('h4', { className: "text-sm font-semibold text-gray-200 tracking-wider uppercase" }, "Quick Links"),
+                        React.createElement('ul', { className: "mt-4 space-y-2" },
+                            React.createElement('li', null, React.createElement(Link, { to: "/", className: "text-base text-gray-400 hover:text-cyan-400" }, "Home")),
+                            React.createElement('li', null, React.createElement(Link, { to: "/about", className: "text-base text-gray-400 hover:text-cyan-400" }, "About Us")),
+                            React.createElement('li', null, React.createElement(Link, { to: "/services", className: "text-base text-gray-400 hover:text-cyan-400" }, "Services")),
+                            React.createElement('li', null, React.createElement(Link, { to: "/contact", className: "text-base text-gray-400 hover:text-cyan-400" }, "Contact"))
+                        )
+                    ),
+                     React.createElement('div', null,
+                        React.createElement('h4', { className: "text-sm font-semibold text-gray-200 tracking-wider uppercase" }, "Offerings"),
+                        React.createElement('ul', { className: "mt-4 space-y-2" },
+                            React.createElement('li', null, React.createElement(Link, { to: "/courses", className: "text-base text-gray-400 hover:text-cyan-400" }, "Courses")),
+                            React.createElement('li', null, React.createElement('a', { href: "#", className: "text-base text-gray-400 hover:text-cyan-400" }, "Tutorials")),
+                            React.createElement('li', null, React.createElement('a', { href: "#", className: "text-base text-gray-400 hover:text-cyan-400" }, "Study Materials"))
+                        )
+                    ),
+                    React.createElement('div', null,
+                        React.createElement('h4', { className: "text-sm font-semibold text-gray-200 tracking-wider uppercase" }, "Legal"),
+                        React.createElement('ul', { className: "mt-4 space-y-2" },
+                            React.createElement('li', null, React.createElement('a', { href: "#", className: "text-base text-gray-400 hover:text-cyan-400" }, "Privacy Policy")),
+                            React.createElement('li', null, React.createElement('a', { href: "#", className: "text-base text-gray-400 hover:text-cyan-400" }, "Terms of Service"))
+                        )
+                    )
+                ),
+                React.createElement('div', { className: "mt-8 border-t border-gray-700 pt-8 text-center" },
+                    React.createElement('p', { className: "text-base text-gray-400" }, "\u00a9 2025 AnkitCodeNet – All Rights Reserved")
+                )
+            )
+        )
+    );
+};
+
+// --- From pages/HomePage.tsx ---
+const Hero = () => (
+  React.createElement('section', { className: "relative bg-gray-900 text-white py-20 md:py-32" },
+    React.createElement('div', { className: "absolute inset-0 bg-black opacity-50" }),
+    React.createElement('div', { 
+        className: "absolute inset-0 bg-cover bg-center", 
+        style: {backgroundImage: "url('https://picsum.photos/seed/hero/1920/1080')", filter: 'blur(4px)'}
+    }),
+    React.createElement('div', { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" },
+      React.createElement('h1', { className: "text-4xl md:text-6xl font-extrabold tracking-tight" },
+        "Welcome to ", React.createElement('span', { className: "text-cyan-400" }, "AnkitCodeNet")
+      ),
+      React.createElement('p', { className: "mt-4 text-lg md:text-2xl text-gray-300" },
+        "Learn. Create. Grow."
+      ),
+      React.createElement('div', { className: "mt-10 flex flex-col sm:flex-row justify-center items-center gap-4" },
+        React.createElement(Link, { to: "/courses", className: "w-full sm:w-auto inline-block bg-cyan-500 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-cyan-600 transition duration-300 transform hover:scale-105" },
+          "Start Learning"
+        ),
+        React.createElement(Link, { to: "/services", className: "w-full sm:w-auto inline-block bg-gray-700 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-gray-600 transition duration-300 transform hover:scale-105" },
+          "Hire Us for a Project"
+        )
+      )
+    )
+  )
+);
+
+const CoursesHighlight = () => (
+    React.createElement('section', { className: "py-20 bg-gray-800" },
+        React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+            React.createElement('div', { className: "text-center" },
+                React.createElement('h2', { className: "text-3xl font-extrabold text-white sm:text-4xl" }, "Our Premier Courses"),
+                React.createElement('p', { className: "mt-4 text-lg text-gray-400" }, "Unlock your potential with our expert-led courses.")
+            ),
+            React.createElement('div', { className: "mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3" },
+                courses.map((course, index) => (
+                    React.createElement('div', { key: index, className: "bg-gray-900 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300" },
+                        React.createElement('div', { className: "p-8" },
+                            React.createElement('h3', { className: "text-2xl font-bold text-white" }, course.title),
+                            React.createElement('p', { className: "mt-4 text-gray-400" }, course.description),
+                            React.createElement('ul', { className: "mt-6 space-y-2" },
+                                course.features.slice(0, 3).map((feature, i) => (
+                                    React.createElement('li', { key: i, className: "flex items-center" },
+                                        React.createElement(CheckCircleIcon, { className: "text-cyan-400" }),
+                                        React.createElement('span', { className: "ml-3 text-gray-300" }, feature)
+                                    )
+                                ))
+                            ),
+                            React.createElement('div', { className: "mt-8" },
+                                React.createElement(Link, { to: "/courses", className: "text-cyan-400 font-semibold hover:text-cyan-300" }, "Learn more \u2192")
+                            )
+                        )
+                    )
+                ))
+            )
+        )
+    )
+);
+
+const Testimonials = () => (
+    React.createElement('section', { className: "py-20 bg-gray-900" },
+        React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+            React.createElement('div', { className: "text-center" },
+                React.createElement('h2', { className: "text-3xl font-extrabold text-white sm:text-4xl" }, "What Our Students & Clients Say"),
+                React.createElement('p', { className: "mt-4 text-lg text-gray-400" }, "Real stories, real success.")
+            ),
+            React.createElement('div', { className: "mt-12 grid gap-8 md:grid-cols-1 lg:grid-cols-3" },
+                testimonials.map((testimonial, index) => (
+                    React.createElement('div', { key: index, className: "bg-gray-800 rounded-lg p-8 flex flex-col" },
+                        React.createElement(QuoteIcon, null),
+                        React.createElement('p', { className: "text-gray-300 flex-grow mt-4" }, `"${testimonial.quote}"`),
+                        React.createElement('div', { className: "mt-6" },
+                            React.createElement('div', { className: "font-bold text-white" }, testimonial.name),
+                            React.createElement('div', { className: "text-sm text-cyan-400" }, testimonial.title),
+                            React.createElement('div', { className: "flex mt-2" },
+                                [...Array(5)].map((_, i) => React.createElement(StarIcon, { key: i }))
+                            )
+                        )
+                    )
+                ))
+            )
+        )
+    )
+);
+
+const FaqItem = ({ faq, index }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        React.createElement('div', { className: "border-b-2 border-gray-700" },
+            React.createElement('button', {
+                className: "flex justify-between items-center w-full py-5 text-left text-lg font-medium text-white",
+                onClick: () => setIsOpen(!isOpen)
+            },
+                React.createElement('span', null, faq.question),
+                React.createElement(ChevronDownIcon, { className: `transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}` })
+            ),
+            React.createElement('div', { className: `overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-96' : 'max-h-0'}` },
+                React.createElement('p', { className: "pb-5 text-gray-400" }, faq.answer)
+            )
+        )
+    );
+};
+
+const FAQ = () => (
+    React.createElement('section', { className: "py-20 bg-gray-800" },
+        React.createElement('div', { className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" },
+            React.createElement('div', { className: "text-center" },
+                React.createElement('h2', { className: "text-3xl font-extrabold text-white sm:text-4xl" }, "Frequently Asked Questions"),
+                React.createElement('p', { className: "mt-4 text-lg text-gray-400" }, "Have questions? We have answers.")
+            ),
+            React.createElement('div', { className: "mt-12" },
+                faqs.map((faq, index) => (
+                    React.createElement(FaqItem, { key: index, faq: faq, index: index })
+                ))
+            )
+        )
+    )
+);
+
+
+const HomePage = () => {
+  return (
+    React.createElement(React.Fragment, null,
+      React.createElement(Hero, null),
+      React.createElement(CoursesHighlight, null),
+      React.createElement(Testimonials, null),
+      React.createElement(FAQ, null)
+    )
+  );
+};
+
+
+// --- From pages/CoursesPage.tsx ---
+const CourseCard = ({ course }) => (
+    React.createElement('div', { className: "bg-gray-800 rounded-lg shadow-lg overflow-hidden flex flex-col h-full border border-gray-700 hover:border-cyan-500 transition-all duration-300" },
+        React.createElement('div', { className: "p-8 flex-grow" },
+            React.createElement('h3', { className: "text-2xl font-bold text-white" }, course.title),
+            React.createElement('p', { className: "mt-4 text-gray-400" }, course.description),
+            React.createElement('div', { className: "mt-6" },
+                React.createElement('h4', { className: "text-lg font-semibold text-gray-200" }, "Features:"),
+                React.createElement('ul', { className: "mt-4 space-y-2" },
+                    course.features.map((feature, i) => (
+                        React.createElement('li', { key: i, className: "flex items-start" },
+                            React.createElement(CheckCircleIcon, { className: "text-cyan-400 mt-1 flex-shrink-0" }),
+                            React.createElement('span', { className: "ml-3 text-gray-300" }, feature)
+                        )
+                    ))
+                )
+            ),
+             React.createElement('div', { className: "mt-6" },
+                React.createElement('h4', { className: "text-lg font-semibold text-gray-200" }, "Highlights:"),
+                 React.createElement('ul', { className: "mt-4 space-y-2" },
+                    course.highlights.map((highlight, i) => (
+                        React.createElement('li', { key: i, className: "flex items-start" },
+                           React.createElement('svg', { className: "w-5 h-5 text-cyan-400 mt-1 flex-shrink-0", fill: "currentColor", viewBox: "0 0 20 20" }, React.createElement('path', { fillRule: "evenodd", d: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z", clipRule: "evenodd" })),
+                            React.createElement('span', { className: "ml-3 text-gray-300" }, highlight)
+                        )
+                    ))
+                )
+            )
+        ),
+        React.createElement('div', { className: "p-8 bg-gray-900 mt-auto" },
+             React.createElement('p', { className: "text-lg font-semibold text-white" }, "Duration: ", React.createElement('span', { className: "text-cyan-400" }, course.duration)),
+            React.createElement('button', { className: "mt-4 w-full bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-cyan-600 transition duration-300 transform hover:scale-105" },
+                "Enroll Now"
+            )
+        )
+    )
+);
+
+const CoursesPage = () => {
+    return (
+        React.createElement('div', { className: "py-20 bg-gray-900" },
+            React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+                React.createElement('div', { className: "text-center" },
+                    React.createElement('h1', { className: "text-4xl font-extrabold text-white sm:text-5xl" }, "Our Courses"),
+                    React.createElement('p', { className: "mt-4 text-xl text-gray-400" }, "Invest in yourself. Start your learning journey today.")
+                ),
+                React.createElement('div', { className: "mt-16 grid gap-10 md:grid-cols-1 lg:grid-cols-3" },
+                    courses.map((course, index) => (
+                        React.createElement(CourseCard, { key: index, course: course })
+                    ))
+                )
+            )
+        )
+    );
+};
+
+
+// --- From pages/AboutPage.tsx ---
+const SkillBadge = ({ skill }) => (
+    React.createElement('span', { className: "inline-block bg-gray-700 text-gray-200 text-sm font-medium px-4 py-2 rounded-full shadow-md" },
+        skill
+    )
+);
+
+const AboutPage = () => {
+    return (
+        React.createElement('div', { className: "py-20 bg-gray-900" },
+            React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+                React.createElement('div', { className: "text-center mb-16" },
+                    React.createElement('h1', { className: "text-4xl font-extrabold text-white sm:text-5xl" }, "About AnkitCodeNet"),
+                    React.createElement('p', { className: "mt-4 text-xl text-gray-400" }, "The story behind the code.")
+                ),
+
+                React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-5 gap-12 items-center" },
+                    React.createElement('div', { className: "md:col-span-2" },
+                        React.createElement('img', { 
+                            src: "https://picsum.photos/seed/ankit/500/500", 
+                            alt: "Ankit, Founder of AnkitCodeNet",
+                            className: "rounded-full w-64 h-64 md:w-full md:h-auto mx-auto shadow-2xl border-4 border-cyan-500"
+                        })
+                    ),
+                    React.createElement('div', { className: "md:col-span-3" },
+                        React.createElement('h2', { className: "text-3xl font-bold text-white mb-4" }, "Meet Ankit"),
+                        React.createElement('p', { className: "text-gray-300 text-lg leading-relaxed" },
+                            "Ankit is a passionate web developer, designer, and educator with a mission to make technology accessible to everyone. With years of experience in the industry, he founded AnkitCodeNet to bridge the gap between theoretical knowledge and practical, real-world skills. His approach focuses on hands-on learning, ensuring that every student and client not only understands the concepts but can also apply them effectively."
+                        )
+                    )
+                ),
+
+                React.createElement('div', { className: "mt-20 grid grid-cols-1 md:grid-cols-2 gap-12" },
+                    React.createElement('div', { className: "bg-gray-800 p-8 rounded-lg shadow-lg" },
+                        React.createElement('h3', { className: "text-2xl font-bold text-cyan-400 mb-4" }, "Our Vision"),
+                        React.createElement('p', { className: "text-gray-300 leading-relaxed" },
+                            "To be a leading platform for tech education and web services, empowering individuals and businesses to thrive in the digital world through high-quality, accessible, and practical learning experiences."
+                        )
+                    ),
+                     React.createElement('div', { className: "bg-gray-800 p-8 rounded-lg shadow-lg" },
+                        React.createElement('h3', { className: "text-2xl font-bold text-cyan-400 mb-4" }, "Our Mission"),
+                        React.createElement('p', { className: "text-gray-300 leading-relaxed" },
+                            "To provide top-tier courses and development services that are not only affordable but also packed with value. We aim to foster a community of learners and creators who are ready to innovate and build the future of the web."
+                        )
+                    )
+                ),
+
+                React.createElement('div', { className: "mt-20" },
+                    React.createElement('h2', { className: "text-3xl font-bold text-white text-center mb-10" }, "Why Choose AnkitCodeNet?"),
+                    React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-8 text-center" },
+                        React.createElement('div', { className: "bg-gray-800 p-6 rounded-lg" },
+                            React.createElement('h4', { className: "text-xl font-semibold text-white mb-2" }, "Expert-Led Training"),
+                            React.createElement('p', { className: "text-gray-400" }, "Learn from an industry professional with real-world experience.")
+                        ),
+                        React.createElement('div', { className: "bg-gray-800 p-6 rounded-lg" },
+                            React.createElement('h4', { className: "text-xl font-semibold text-white mb-2" }, "Project-Based Learning"),
+                            React.createElement('p', { className: "text-gray-400" }, "Build a strong portfolio by working on practical, hands-on projects.")
+                        ),
+                         React.createElement('div', { className: "bg-gray-800 p-6 rounded-lg" },
+                            React.createElement('h4', { className: "text-xl font-semibold text-white mb-2" }, "Dedicated Support"),
+                            React.createElement('p', { className: "text-gray-400" }, "Get your doubts cleared and receive personalized feedback.")
+                        )
+                    )
+                ),
+
+                React.createElement('div', { className: "mt-20" },
+                    React.createElement('h2', { className: "text-3xl font-bold text-white text-center mb-10" }, "Our Expertise"),
+                    React.createElement('div', { className: "flex flex-wrap justify-center gap-4" },
+                        skills.map(skill => React.createElement(SkillBadge, { key: skill, skill: skill }))
+                    )
+                )
+            )
+        )
+    );
+};
+
+
+// --- From pages/ServicesPage.tsx ---
+const ServiceCard = ({ service }) => (
+    React.createElement('div', { className: "bg-gray-800 rounded-lg shadow-lg overflow-hidden group" },
+        React.createElement('div', { className: "relative overflow-hidden" },
+            React.createElement('img', { 
+                src: service.imageUrl, 
+                alt: service.title, 
+                className: "w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+            }),
+             React.createElement('div', { className: "absolute inset-0 bg-black bg-opacity-40" })
+        ),
+        React.createElement('div', { className: "p-8" },
+            React.createElement('h3', { className: "text-2xl font-bold text-white" }, service.title),
+            React.createElement('p', { className: "mt-4 text-gray-400" }, service.description),
+            React.createElement('button', { className: "mt-6 inline-block text-cyan-400 font-semibold hover:text-cyan-300 transition-colors duration-300" },
+                "View Portfolio \u2192"
+            )
+        )
+    )
+);
+
+const ServicesPage = () => {
+    return (
+        React.createElement('div', { className: "py-20 bg-gray-900" },
+            React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+                React.createElement('div', { className: "text-center" },
+                    React.createElement('h1', { className: "text-4xl font-extrabold text-white sm:text-5xl" }, "Our Services"),
+                    React.createElement('p', { className: "mt-4 text-xl text-gray-400" }, "Bringing your ideas to life with professional design and development.")
+                ),
+
+                React.createElement('div', { className: "mt-16 text-center" },
+                    React.createElement('h2', { className: "text-3xl font-bold text-white mb-4" }, "Client Projects"),
+                    React.createElement('p', { className: "text-lg text-gray-400 max-w-3xl mx-auto" }, "We partner with businesses to create digital experiences that are engaging, effective, and drive results. Explore our portfolio of work.")
+                ),
+
+                React.createElement('div', { className: "mt-12 grid gap-10 md:grid-cols-2" },
+                    services.map((service, index) => (
+                        React.createElement(ServiceCard, { key: index, service: service })
+                    ))
+                )
+            )
+        )
+    );
+};
+
+
+// --- From pages/ContactPage.tsx ---
+const ContactPage = () => {
+    const [result, setResult] = useState("");
+
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        setResult("Sending....");
+        const formData = new FormData(event.currentTarget);
+
+        // IMPORTANT: Replace with your own access key from web3forms.com
+        formData.append("access_key", "YOUR_ACCESS_KEY_HERE");
+
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+        }).then(res => res.json());
+
+        if (response.success) {
+            setResult("Form Submitted Successfully!");
+            event.target.reset();
+        } else {
+            console.log("Error", response);
+            setResult(response.message);
+        }
+    };
+
+    return (
+        React.createElement('div', { className: "py-20 bg-gray-900" },
+            React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+                React.createElement('div', { className: "text-center" },
+                    React.createElement('h1', { className: "text-4xl font-extrabold text-white sm:text-5xl" }, "Contact Us"),
+                    React.createElement('p', { className: "mt-4 text-xl text-gray-400" }, "We'd love to hear from you. Let's build something amazing together.")
+                ),
+
+                React.createElement('div', { className: "mt-16 max-w-3xl mx-auto" },
+                    React.createElement('div', { className: "bg-gray-800 rounded-lg shadow-lg p-8" },
+                        React.createElement('form', { onSubmit: onSubmit },
+                            React.createElement('input', { type: "checkbox", name: "botcheck", className: "hidden", style: {display: "none"} }),
+                            React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6" },
+                                React.createElement('div', null,
+                                    React.createElement('label', { htmlFor: "name", className: "block text-sm font-medium text-gray-300" }, "Name"),
+                                    React.createElement('input', { type: "text", name: "name", id: "name", required: true, className: "mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"})
+                                ),
+                                React.createElement('div', null,
+                                    React.createElement('label', { htmlFor: "email", className: "block text-sm font-medium text-gray-300" }, "Email"),
+                                    React.createElement('input', { type: "email", name: "email", id: "email", required: true, className: "mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"})
+                                )
+                            ),
+                            React.createElement('div', { className: "mt-6" },
+                                React.createElement('label', { htmlFor: "phone", className: "block text-sm font-medium text-gray-300" }, "Phone"),
+                                React.createElement('input', { type: "text", name: "phone", id: "phone", className: "mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"})
+                            ),
+                            React.createElement('div', { className: "mt-6" },
+                                React.createElement('label', { htmlFor: "message", className: "block text-sm font-medium text-gray-300" }, "Message"),
+                                React.createElement('textarea', { name: "message", id: "message", rows: 4, required: true, className: "mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"})
+                            ),
+                            React.createElement('div', { className: "mt-6 text-center" },
+                                React.createElement('button', { type: "submit", className: "w-full bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-cyan-600 transition duration-300 transform hover:scale-105" },
+                                    "Send Message"
+                                )
+                            )
+                        ),
+                        result && React.createElement('p', { className: "mt-4 text-center text-gray-300" }, result)
+                    ),
+                     React.createElement('p', { className: "text-center mt-4 text-sm text-gray-500" },
+                        "To make this form work, sign up for a free account at ", 
+                        React.createElement('a', { href: "https://web3forms.com/", target: "_blank", rel: "noopener noreferrer", className: "text-cyan-400 underline" }, "web3forms.com"),
+                        " and replace \"YOUR_ACCESS_KEY_HERE\" in the code."
+                    )
+                )
+            )
+        )
+    );
+};
+
+// --- From App.tsx ---
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
+function App() {
+  return (
+    React.createElement(HashRouter, null,
+      React.createElement(ScrollToTop, null),
+      React.createElement('div', { className: "flex flex-col min-h-screen bg-gray-900 text-gray-100" },
+        React.createElement(Header, null),
+        React.createElement('main', { className: "flex-grow pt-20" },
+          React.createElement(Routes, null,
+            React.createElement(Route, { path: "/", element: React.createElement(HomePage, null) }),
+            React.createElement(Route, { path: "/courses", element: React.createElement(CoursesPage, null) }),
+            React.createElement(Route, { path: "/about", element: React.createElement(AboutPage, null) }),
+            React.createElement(Route, { path: "/services", element: React.createElement(ServicesPage, null) }),
+            React.createElement(Route, { path: "/contact", element: React.createElement(ContactPage, null) })
+          )
+        ),
+        React.createElement(Footer, null)
+      )
+    )
+  );
+}
+
+// --- From index.tsx ---
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Could not find root element to mount to");
+}
+
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  React.createElement(React.StrictMode, null,
+    React.createElement(App, null)
+  )
+);
+    </script>
+  </body>
+</html>
